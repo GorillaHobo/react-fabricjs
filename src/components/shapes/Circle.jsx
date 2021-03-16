@@ -1,6 +1,7 @@
 import { fabric } from 'fabric';
 import { Button, Tooltip } from 'antd';
 import { BsCircle as CircleIcon } from 'react-icons/bs';
+
 import BaseObject from './BaseObject';
 
 class Circle extends BaseObject {
@@ -22,7 +23,8 @@ const defaultCircleProperties = {
   fill: "transparent",
   stroke: "#282828",
   left: 100,
-  top: 100
+  top: 100,
+  strokeUniform: true
 }
 
 export default Circle

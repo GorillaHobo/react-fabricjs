@@ -1,22 +1,15 @@
 import React from 'react';
-import Circle from './Circle';
-import Rectangle from './Rectangle';
-import IText from './IText';
+
 import Colors from './Colors';
 import Image from './Image';
+import RightMenu from './menus/RightMenu';
 
 
 class Menu extends React.Component {
 
   render() {
     return (
-      <div style={styles.menu}>
-        <Circle canvas={this.props.canvas} />
-        <Rectangle canvas={this.props.canvas} />
-        <Colors canvas={this.props.canvas}/>
-        <IText canvas={this.props.canvas}/>
-        <Image canvas={this.props.canvas}/>
-      </div>
+        <RightMenu/>
     );
   }
 }

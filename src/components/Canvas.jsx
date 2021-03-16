@@ -2,10 +2,6 @@ import React from 'react';
 import { Spin } from 'antd';
 
 class Canvas extends React.Component {
-  objectDidMount() {
-    this.props.canvas !== {} && console.log(this.props.canvas);
-  }
-
   render() {
     return (
       <div style={styles.container}>
