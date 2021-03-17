@@ -2,6 +2,7 @@ import React from 'react'
 import { fabric } from 'fabric';
 import { Tooltip, Button, Select, InputNumber, Divider } from 'antd';
 
+import {MdCropPortrait as Portrait, MdCropLandscape as Landscape} from 'react-icons/md';
 import {AiOutlineClear as ClearAll} from 'react-icons/ai';
 import {
   GrTextAlignCenter as Center,
@@ -23,7 +24,7 @@ class TopMenu extends React.Component {
   constructor() {
     super()
     this.state = {
-      currentFontSize: 20
+      isLandscape: false
     }
   }
 
@@ -83,6 +84,20 @@ class TopMenu extends React.Component {
     this.props.canvas.set("backgroundColor", "white")
   }
 
+  setLandscape = () => {
+    if (this.state.isLandscape) return
+    this.setState({isLandscape: true})
+    this.props.canvas.setHeight(434)
+    this.props.canvas.setWidth(600)
+  }
+
+  setPortrait = () => {
+    if (!this.state.isLandscape) return
+    this.setState({isLandscape: false})
+    this.props.canvas.setHeight(600)
+    this.props.canvas.setWidth(434)
+  }
+
   check = () => {
     const select = this.props.canvas.getActiveObjects()
     select.forEach((obj) => console.log(obj.type))
@@ -91,6 +106,15 @@ class TopMenu extends React.Component {
   render() {
     return (
       <div style={styles.container}>
+        <div>
+          <Tooltip title="Landscape">
+            <Button type={this.state.isLandscape && "primary"} onClick={() => this.setLandscape()} icon={<Landscape />}/>
+          </Tooltip>
+          <Tooltip title="portrait">
+            <Button type={!this.state.isLandscape && "primary"} onClick={() => this.setPortrait()} icon={<Portrait />}/>
+          </Tooltip>
+        </div>
+        <Divider type="vertical"/>
         <div style={styles.item}>
           <h5 style={styles.tag}>Size: </h5>
           <InputNumber keyboard min={1} defaultValue={this.state.currentFontSize} onChange={this.setFontSize} />
@@ -126,8 +150,10 @@ class TopMenu extends React.Component {
         </div>
         <Divider type="vertical" />
         <div>
-          <Tooltip title="Delete">
+          <Tooltip title="Clear selected">
             <Button onClick={() => this.deleteObjects()} icon={<Trash />} />
+          </Tooltip>
+          <Tooltip title="Clear all">
             <Button onClick={() => this.clearAll()} icon={<ClearAll />} />
           </Tooltip>
         </div>

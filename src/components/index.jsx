@@ -84,7 +84,7 @@ const styles = {
 const canvasDefaultValue = {
   backgroundColor: "white",
   height: "600",
-  width: "600",
+  width: "434",
 }
 
 

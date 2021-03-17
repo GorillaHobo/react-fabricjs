@@ -23,7 +23,7 @@ class RightMenu extends React.Component {
 const styles = {
   container: {
     display: "grid",
-    gridTemplateColumns: "repeat(2, 2fr)"
+    gridTemplateColumns: "repeat(2, 1fr)"
   }
 }
 
