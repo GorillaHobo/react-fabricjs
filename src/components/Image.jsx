@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 import { Button } from 'antd';
 
-import BaseObject from './BaseObject';
+import BaseObject from './shapes/BaseObject';
 
 const url = "https://picsum.photos/1000/1000"
 class Image extends BaseObject {

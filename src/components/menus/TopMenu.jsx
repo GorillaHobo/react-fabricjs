@@ -1,12 +1,19 @@
 import React from 'react'
 import { fabric } from 'fabric';
-import { Button, Select, InputNumber } from 'antd';
+import { Tooltip, Button, Select, InputNumber, Divider } from 'antd';
+
+import {AiOutlineClear as ClearAll} from 'react-icons/ai';
 import {
   GrTextAlignCenter as Center,
   GrTextAlignFull as Full,
   GrTextAlignLeft as Left,
-  GrTextAlignRight as Right
+  GrTextAlignRight as Right,
+  GrTrash as Trash
 } from 'react-icons/gr';
+import {
+  FaObjectGroup as Group,
+  FaObjectUngroup as Ungroup,
+} from 'react-icons/fa';
 
 const { Option } = Select
 
@@ -18,12 +25,6 @@ class TopMenu extends React.Component {
     this.state = {
       currentFontSize: 20
     }
-  }
-
-  componentDidUpdate() {
-    // this.props.canvas.on("mouse:up", () => {
-    //   const text = this.props.canvas.getActiveObjects().filter((obj) => (obj instanceof fabric.IText))
-    // })
   }
 
   setFontFamily = (font) => {
@@ -48,6 +49,45 @@ class TopMenu extends React.Component {
     this.props.canvas.renderAll()
   }
 
+  deleteObjects = () => {
+    this.props.canvas.getActiveObjects().forEach((obj) => this.props.canvas.remove(obj))
+    this.props.canvas.renderAll()
+  }
+
+  groupObjects = () => {
+    const objects = this.props.canvas.getActiveObjects()
+    if (objects.length > 1) {
+      const group = new fabric.Group(objects, { left: 200, top: 200 })
+      this.deleteObjects()
+      this.props.canvas.add(group)
+      this.props.canvas.renderAll()
+    }
+  }
+
+  ungroupObjects = () => {
+    const objects = this.props.canvas.getActiveObjects()
+    objects.forEach((group) => {
+      if (group.type === "group") {
+        group.destroy()
+        const oldGroup = group.getObjects()
+        this.props.canvas.remove(group)
+        this.props.canvas.add(...oldGroup)
+        group = null
+        this.props.canvas.requestRenderAll()
+      }
+    })
+  }
+
+  clearAll = () => {
+    this.props.canvas.clear()
+    this.props.canvas.set("backgroundColor", "white")
+  }
+
+  check = () => {
+    const select = this.props.canvas.getActiveObjects()
+    select.forEach((obj) => console.log(obj.type))
+  }
+
   render() {
     return (
       <div style={styles.container}>
@@ -59,14 +99,37 @@ class TopMenu extends React.Component {
           <h5 style={styles.tag}>Font: </h5>
           <Select defaultValue={fonts[0]} onChange={(value) => this.setFontFamily(value)} style={styles.select}>
             {fonts.map((font, index) => (
-                <Option key={index} value={font}>{font}</Option>
+              <Option key={index} value={font}>{font}</Option>
             ))}
           </Select>
         </div>
+        <Divider type="vertical" />
         <div style={styles.item}>
-          <Button onClick={() => this.setAlign("left")} icon={<Left />} />
-          <Button onClick={() => this.setAlign("center")} icon={<Center />} />
-          <Button onClick={() => this.setAlign("right")} icon={<Right />} />
+          <Tooltip title="Align left">
+            <Button onClick={() => this.setAlign("left")} icon={<Left />} />
+          </Tooltip>
+          <Tooltip title="Align center">
+            <Button onClick={() => this.setAlign("center")} icon={<Center />} />
+          </Tooltip>
+          <Tooltip title="Align right">
+            <Button onClick={() => this.setAlign("right")} icon={<Right />} />
+          </Tooltip>
+        </div>
+        <Divider type="vertical" />
+        <div>
+          <Tooltip title="Group">
+            <Button onClick={() => this.groupObjects()} icon={<Group />} />
+          </Tooltip>
+          <Tooltip title="Ungroup">
+            <Button onClick={() => this.ungroupObjects()} icon={<Ungroup />} />
+          </Tooltip>
+        </div>
+        <Divider type="vertical" />
+        <div>
+          <Tooltip title="Delete">
+            <Button onClick={() => this.deleteObjects()} icon={<Trash />} />
+            <Button onClick={() => this.clearAll()} icon={<ClearAll />} />
+          </Tooltip>
         </div>
       </div >
     )
