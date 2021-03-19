@@ -24,7 +24,9 @@ const defaultRectangleProperties = {
   height: 40,
   width: 40,
   strokeUniform: true,
-  strokeWidth: 2
+  strokeWidth: 2,
+  zoomX: 2,
+  zoomY: 2
 }
 
 export default Rectangle

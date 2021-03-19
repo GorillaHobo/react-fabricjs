@@ -5,47 +5,56 @@ import { Button, Spin, Layout } from 'antd';
 import Canvas from './Canvas';
 import RightMenu from './menus/RightMenu';
 import TopMenu from './menus/TopMenu';
-import CanvasBackground from './CanvasBackground';
+import LeftMenu from './menus/LeftMenu';
 
 const { Header, Footer, Sider, Content } = Layout
 
 class CertificateEditor extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       canvas: {},
-      loaded: false
+      currentObject: null
     }
   }
 
   componentDidMount() {
-    this.setState({ canvas: new fabric.Canvas("canvas", canvasDefaultValue) })
-    this.setState({ loaded: true })
+    const canvas = new fabric.Canvas("canvas", canvasDefaultValue)
+    canvas.on("mouse:up", () => {
+      const activeObjects = canvas.getActiveObjects()
+      if (activeObjects.length === 1 && activeObjects[0].get('type') !== "group") {
+        this.setState({ currentObject: canvas.getActiveObject() })
+      } else {
+        this.setState({ currentObject: null })
+      }
+    })
+    this.setState({ canvas: canvas })
   }
 
-  changeBackground = (imageUrl) => {
-    new fabric.Image.fromURL(imageUrl, (img) => {
-      img.scaleX = this.state.canvas.height / img.height
-      img.scaleY = this.state.canvas.width / img.width
-      this.state.canvas.setBackgroundImage(img, this.state.canvas.renderAll.bind(this.state.canvas))
-    })
+  check = () => {
+    if (this.state.currentObject !== null) {
+      console.log(this.state.currentObject);
+      return
+    }
+    console.log("null");
   }
 
   render() {
+    const { canvas, currentObject } = this.state
     return (
-      <Layout style={styles.layout}>
+      <Layout style={styles.layout} >
         <Header style={styles.header}>
-          <TopMenu canvas={this.state.canvas} />
+          <TopMenu canvas={canvas} />
         </Header>
         <Layout style={styles.layout}>
           <Sider style={styles.sider}>
-            <CanvasBackground changeColor={this.changeBackground} />
+            <LeftMenu canvas={canvas} currentObject={currentObject} />
           </Sider>
           <Content style={styles.content}>
-            <Canvas canvas={this.state.canvas} />
+            <Canvas canvas={canvas} />
           </Content>
           <Sider style={styles.sider}>
-            <RightMenu canvas={this.state.canvas} />
+            <RightMenu canvas={canvas} />
           </Sider>
         </Layout>
       </Layout>
@@ -85,6 +94,7 @@ const canvasDefaultValue = {
   backgroundColor: "white",
   height: "600",
   width: "434",
+  preserveObjectStacking: true,
 }
 
 

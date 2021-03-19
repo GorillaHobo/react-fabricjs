@@ -2,16 +2,11 @@ import React from 'react';
 import { Spin } from 'antd';
 
 class Canvas extends React.Component {
-  change = () => {
-    console.log("changeing");
-    this.props.canvas.setHeight(200)
-    this.props.canvas.requestRenderAll()
-  }
 
   render() {
     return (
       <div style={styles.container}>
-        <canvas id="canvas" />
+          <canvas id="canvas" />
       </div>
     );
   }

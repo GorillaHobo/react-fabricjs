@@ -4,7 +4,6 @@ import Circle from '../shapes/Circle';
 import Rectangle from '../shapes/Rectangle';
 import IText from '../shapes/IText';
 import Line from '../shapes/Line';
-import Image from '../Image';
 
 class RightMenu extends React.Component {
   render() {
@@ -14,7 +13,6 @@ class RightMenu extends React.Component {
         <Rectangle canvas={this.props.canvas} />
         <IText canvas={this.props.canvas} />
         <Line canvas={this.props.canvas} />
-        <Image canvas={this.props.canvas} />
       </div>
     )
   }
